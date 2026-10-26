@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards';
+import { adminGuard, authGuard } from './core/guards';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -13,5 +13,7 @@ export const routes: Routes = [
     loadComponent: () => import('./user/result').then(m => m.ResultComponent) },
   { path: 'my-attempts', canActivate: [authGuard],
     loadComponent: () => import('./user/my-attempts').then(m => m.MyAttemptsComponent) },
+    { path: 'admin', canActivate: [adminGuard],
+    loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES) },
   { path: '**', redirectTo: 'home' }
 ];

@@ -48,3 +48,8 @@ th, td { text-align:left; padding:10px; border-bottom:1px solid var(--border); }
 .pill.done { background:#dbeafe; }
 .pill.active { border-color:var(--primary); font-weight:700; }
 .score { font-size:2rem; font-weight:700; }
+a.btn { text-decoration:none; display:inline-block; }
+.admin-tabs { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+.admin-tabs a { padding:8px 14px; border-radius:6px; background:#fff; border:1px solid var(--border);
+                text-decoration:none; color:var(--text); }
+.admin-tabs a.active { background:var(--primary); color:#fff; border-color:var(--primary); }
