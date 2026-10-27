@@ -6,8 +6,9 @@ import { AuthService } from './core/auth.service';
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   template: `
-    <nav class="navbar">
-      <a class="brand" routerLink="/">Quiz App</a>
+    <div class="app-wrapper">
+      <nav class="navbar">
+      <a class="brand" routerLink="/">Quiz Apps</a>
       <div class="links">
         @if (auth.isLoggedIn()) {
           <a routerLink="/home" routerLinkActive="active">Quizzes</a>
@@ -26,8 +27,23 @@ import { AuthService } from './core/auth.service';
     <main class="container">
       <router-outlet />
     </main>
+    <footer class="footer">
+      <div class="footer-content">
+        <a routerLink="/" class="footer-brand">
+          <img src="images/logo.png" alt="Quiz Apps Logo" />
+          <span>Quiz Apps</span>
+        </a>
+        <p>This system is design and develop by Hasanul Islam</p>
+
+        <p>
+          &copy; {{ currentYear }} Quiz Apps. All rights reserved.
+        </p>
+      </div>
+    </footer>
+    </div>
   `
 })
 export class AppComponent {
   auth = inject(AuthService);
+  currentYear = new Date().getFullYear();
 }

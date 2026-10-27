@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 :root { --primary:#2563eb; --bg:#f5f7fb; --text:#1f2937; --border:#e5e7eb; --ok:#16a34a; --bad:#dc2626; }
 * { box-sizing: border-box; }
-body { margin:0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); }
+body { margin:0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
 .navbar { display:flex; justify-content:space-between; align-items:center; padding:12px 24px;
           background:#fff; border-bottom:1px solid var(--border); }
@@ -53,3 +53,59 @@ a.btn { text-decoration:none; display:inline-block; }
 .admin-tabs a { padding:8px 14px; border-radius:6px; background:#fff; border:1px solid var(--border);
                 text-decoration:none; color:var(--text); }
 .admin-tabs a.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+/* Footer */
+.footer {
+  margin-top: 40px;
+  padding: 20px 24px;
+  background: #1f2937;
+  color: #ffffff;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.footer-brand img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.footer-content p {
+  margin: 0;
+  font-size: 14px;
+  color: #d1d5db;
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-wrapper main.container {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+}
