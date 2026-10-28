@@ -8,7 +8,7 @@ export const ADMIN_ROUTES: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard',
-        loadComponent: () => import('./dashboard').then(m => m.AdminDashboardComponent) },
+        loadComponent: () => import('./dashboard/dashboard').then(m => m.AdminDashboard) },
       { path: 'categories',
         loadComponent: () => import('./categories').then(m => m.AdminCategoriesComponent) },
       { path: 'questions',

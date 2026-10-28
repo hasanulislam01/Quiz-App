@@ -1,0 +1,165 @@
+@if (data(); as d) {
+  <section class="dashboard-container">
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <div>
+        <span class="dashboard-label">ADMINISTRATION</span>
+        <h2>Dashboard Overview</h2>
+        <p>Monitor your job preparation platform at a glance.</p>
+      </div>
+
+      <div class="dashboard-header-icon">📊</div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+
+      <article class="stat-card users-card">
+        <div class="stat-top">
+          <div class="stat-icon">👥</div>
+          <span class="stat-caption">Registered members</span>
+        </div>
+        <div class="stat-value">{{ d.users }}</div>
+        <h3>Total Users</h3>
+      </article>
+
+      <article class="stat-card categories-card">
+        <div class="stat-top">
+          <div class="stat-icon">📚</div>
+          <span class="stat-caption">Available subjects</span>
+        </div>
+        <div class="stat-value">{{ d.categories }}</div>
+        <h3>Categories</h3>
+      </article>
+
+      <article class="stat-card questions-card">
+        <div class="stat-top">
+          <div class="stat-icon">❓</div>
+          <span class="stat-caption">Question bank</span>
+        </div>
+        <div class="stat-value">{{ d.questions }}</div>
+        <h3>Total Questions</h3>
+      </article>
+
+      <article class="stat-card attempts-card">
+        <div class="stat-top">
+          <div class="stat-icon">📝</div>
+          <span class="stat-caption">Practice activity</span>
+        </div>
+        <div class="stat-value">{{ d.attempts }}</div>
+        <h3>Total Attempts</h3>
+      </article>
+
+    </div>
+
+    <!-- Category Readiness -->
+    <section class="category-panel">
+      <div class="panel-header">
+        <div>
+          <span class="panel-label">QUESTION BANK</span>
+          <h3>Category Readiness</h3>
+          <p>Check whether each category has enough questions for an exam.</p>
+        </div>
+
+        <div class="required-count">
+          <span>Questions per exam</span>
+          <strong>{{ d.examQuestionCount }}</strong>
+        </div>
+      </div>
+
+      <!-- Readiness Summary -->
+      <div class="readiness-summary">
+        <div class="readiness-item">
+          <span class="readiness-dot ready-dot"></span>
+          <span>Ready categories</span>
+          <strong>
+            {{ getReadyCategoriesCount() }}
+          </strong>
+        </div>
+
+        <div class="readiness-item">
+          <span class="readiness-dot warning-dot"></span>
+          <span>Need more questions</span>
+          <strong>
+            {{ getCategoriesNeedingQuestionsCount() }}
+          </strong>
+        </div>
+      </div>
+
+      @if (d.categoryStats.length === 0) {
+        <div class="dashboard-empty">
+          <div class="empty-icon">📂</div>
+          <h4>No categories available</h4>
+          <p>Create a category to start organizing exam questions.</p>
+        </div>
+      } @else {
+        <div class="category-table-wrapper">
+          <table class="category-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Questions</th>
+                <th>Progress</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (c of d.categoryStats; track c.id) {
+                <tr>
+                  <td>
+                    <div class="category-cell">
+                      <div class="category-symbol">📘</div>
+                      <span>{{ c.name }}</span>
+                    </div>
+                  </td>
+
+                  <td>
+                    <span class="question-count">{{ c.questionCount }}</span>
+                    <span class="question-total">
+                      / {{ d.examQuestionCount }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <div class="progress-cell">
+                      <div class="progress-track">
+                        <div
+                          class="progress-fill"
+                          [class.progress-ready]="c.enoughQuestions"
+                          [style.width.%]="
+                            d.examQuestionCount > 0
+                              ? (c.questionCount / d.examQuestionCount * 100 > 100
+                                  ? 100
+                                  : c.questionCount / d.examQuestionCount * 100)
+                              : 0
+                          "
+                        ></div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td>
+                    @if (c.enoughQuestions) {
+                      <span class="readiness-badge badge-ready">
+                        <span class="badge-dot"></span>
+                        Ready
+                      </span>
+                    } @else {
+                      <span class="readiness-badge badge-warning">
+                        <span class="badge-dot"></span>
+                        Needs {{ d.examQuestionCount - c.questionCount }} more
+                      </span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+
+  </section>
+}
