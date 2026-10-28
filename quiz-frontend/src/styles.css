@@ -10,7 +10,7 @@ body { margin:0; font-family: system-ui, sans-serif; background: var(--bg); colo
 .navbar a { text-decoration:none; color:var(--text); }
 .navbar a.active { color:var(--primary); font-weight:600; }
 
-.container { max-width:900px; margin:24px auto; padding:0 16px; }
+.container { margin:24px auto; padding:0 16px; }
 .card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:20px; margin-bottom:16px; }
 .narrow { max-width:420px; margin:40px auto; }
 .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:16px; }
