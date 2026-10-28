@@ -10,7 +10,7 @@ export const ADMIN_ROUTES: Routes = [
       { path: 'dashboard',
         loadComponent: () => import('./dashboard/dashboard').then(m => m.AdminDashboard) },
       { path: 'categories',
-        loadComponent: () => import('./categories').then(m => m.AdminCategoriesComponent) },
+        loadComponent: () => import('./categories/categories').then(m => m.Categories) },
       { path: 'questions',
         loadComponent: () => import('./questions').then(m => m.AdminQuestionsComponent) },
       { path: 'questions/new',

@@ -1,0 +1,282 @@
+<!-- Confirmation message -->
+
+@if (successMessage()) {
+  <div class="success-message" role="status">
+    <span class="success-check">✓</span>
+    <span>{{ successMessage() }}</span>
+
+    <button
+      type="button"
+      class="success-close"
+      aria-label="Dismiss message"
+      (click)="successMessage.set('')"
+    >
+      ×
+    </button>
+  </div>
+}
+
+
+<section class="categories-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <span class="page-eyebrow">CONTENT MANAGEMENT</span>
+      <h2>Categories</h2>
+      <p>Organize your subjects and manage exam preparation categories.</p>
+    </div>
+
+    <button class="add-category-btn" type="button" (click)="openAddDialog()">
+      <span class="plus-icon">+</span>
+      Add Category
+    </button>
+  </div>
+
+  <!-- Summary -->
+  <div class="category-summary">
+    <div class="summary-icon">📚</div>
+    <div>
+      <span>Total Categories</span>
+      <h3>{{ categories().length }}</h3>
+    </div>
+  </div>
+
+  <!-- Category Table -->
+  <section class="category-panel">
+    <div class="panel-heading">
+      <div>
+        <h3>All Categories</h3>
+        <p>Manage category names, descriptions and questions.</p>
+      </div>
+
+      <span class="total-badge">
+        {{ categories().length }} categories
+      </span>
+    </div>
+
+    @if (categories().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <h3>No categories yet</h3>
+        <p>Create your first category to organize exam questions.</p>
+
+        <button
+          class="add-category-btn"
+          type="button"
+          (click)="openAddDialog()"
+        >
+          + Create Category
+        </button>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table class="category-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Questions</th>
+              <th class="actions-heading">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (c of categories(); track c.id) {
+              <tr>
+                <td>
+                  <div class="category-name-cell">
+                    <div class="category-icon">📘</div>
+                    <div>
+                      <strong>{{ c.name }}</strong>
+                      <span class="category-id">Category #{{ c.id }}</span>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <span class="description-text">
+                    {{ c.description || 'No description provided' }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="question-badge">
+                    {{ c.questionCount }} questions
+                  </span>
+                </td>
+
+                <td>
+                  <div class="action-buttons">
+                    <button
+                      class="icon-action edit-action"
+                      type="button"
+                      title="Edit category"
+                      aria-label="Edit category"
+                      (click)="edit(c)"
+                    >
+                      <span>✏️</span>
+                      Edit
+                    </button>
+
+                    <button
+                      class="icon-action delete-action"
+                      type="button"
+                      title="Delete category"
+                      aria-label="Delete category"
+                      (click)="openDeleteDialog(c)"
+                    >
+                      <span>🗑️</span>
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</section>
+
+<!-- Add / Edit Category Dialog -->
+@if (dialogOpen()) {
+  <div
+    class="dialog-backdrop"
+    (click)="closeDialog()"
+  >
+    <section
+      class="category-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="category-dialog-title"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="dialog-header">
+        <div class="dialog-title-icon">📚</div>
+
+        <button
+          type="button"
+          class="dialog-close"
+          aria-label="Close dialog"
+          (click)="closeDialog()"
+        >
+          &times;
+        </button>
+      </div>
+
+      <span class="dialog-eyebrow">
+        {{ editingId() === null ? 'NEW CATEGORY' : 'UPDATE CATEGORY' }}
+      </span>
+
+      <h3 id="category-dialog-title">
+        {{ editingId() === null ? 'Add Category' : 'Edit Category' }}
+      </h3>
+
+      <p class="dialog-description">
+        {{
+          editingId() === null
+            ? 'Create a category for your job preparation questions.'
+            : 'Update the category information below.'
+        }}
+      </p>
+
+      <form (ngSubmit)="save()">
+        <div class="form-field">
+          <label for="category-name">Category Name <span>*</span></label>
+          <input
+            id="category-name"
+            name="name"
+            [(ngModel)]="name"
+            placeholder="e.g. General Knowledge"
+            required
+            maxlength="100"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="category-description">Description</label>
+          <textarea
+            id="category-description"
+            name="description"
+            [(ngModel)]="description"
+            placeholder="Describe what this category covers..."
+            rows="4"
+            maxlength="500"
+          ></textarea>
+          <span class="field-hint">A short description helps users choose a category.</span>
+        </div>
+
+        @if (error()) {
+          <div class="form-error">
+            <span>⚠️</span>
+            {{ error() }}
+          </div>
+        }
+
+        <div class="dialog-actions">
+          <button
+            class="cancel-btn"
+            type="button"
+            (click)="closeDialog()"
+          >
+            Cancel
+          </button>
+
+          <button class="submit-btn" type="submit">
+            {{ editingId() === null ? '+ Create Category' : 'Save Changes' }}
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+}
+
+
+
+<!-- delete dialog -->
+
+@if (deleteDialogOpen() && categoryToDelete(); as category) {
+  <div
+    class="modal-backdrop"
+    (click)="closeDeleteDialog()"
+  >
+    <div
+      class="modal-card delete-dialog"
+      role="dialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="delete-icon">!</div>
+
+      <h2>Delete Category?</h2>
+
+      <p>
+        Are you sure you want to delete
+        <strong>{{ category.name }}</strong>?
+      </p>
+
+      <p class="delete-warning">
+        This action cannot be undone.
+      </p>
+
+      <div class="dialog-actions">
+        <button
+          type="button"
+          class="btn-cancel"
+          (click)="closeDeleteDialog()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="btn-delete"
+          (click)="confirmDelete()"
+        >
+          Yes, Delete
+        </button>
+      </div>
+    </div>
+  </div>
+}
