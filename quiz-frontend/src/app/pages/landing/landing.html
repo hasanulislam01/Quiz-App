@@ -1,0 +1,218 @@
+
+<main class="landing-page">
+
+  <!-- Hero section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">
+        <span class="live-dot"></span>
+        YOUR JOURNEY TO CAREER SUCCESS
+      </div>
+
+      <h1>
+        Your dream job starts with
+        <span class="gradient-text">better preparation.</span>
+      </h1>
+
+      <p class="hero-description">
+        Practice smarter, measure your skills, and discover where you stand.
+        Build the confidence you need to succeed in competitive exams and job interviews.
+      </p>
+
+      <div class="hero-actions">
+        @if (auth.isLoggedIn()) {
+          <a class="btn primary-btn"
+             [routerLink]="auth.isAdmin() ? '/admin' : '/home'">
+            {{ auth.isAdmin() ? 'Open Admin Panel' : 'Continue Preparing' }}
+            <span aria-hidden="true">→</span>
+          </a>
+        } @else {
+          <a class="btn primary-btn" routerLink="/register">
+            Start Preparing Free <span aria-hidden="true">→</span>
+          </a>
+          <a class="btn secondary-btn" routerLink="/login">
+            Sign In
+          </a>
+        }
+      </div>
+
+      <div class="hero-note">
+        <span class="check-icon">✓</span>
+        Practice at your own pace. Improve with every attempt.
+      </div>
+    </div>
+
+    <!-- Preparation dashboard preview -->
+    <div class="hero-visual">
+      <div class="visual-glow"></div>
+
+      <div class="dashboard-card">
+        <div class="dashboard-top">
+          <div>
+            <span class="dashboard-label">YOUR NEXT CHAPTER</span>
+            <h3>Preparation Dashboard</h3>
+          </div>
+          <div class="dashboard-icon">↗</div>
+        </div>
+
+        <div class="readiness-card">
+          <div class="readiness-info">
+            <div>
+              <span class="small-label">Your goal</span>
+              <h3>Career Ready</h3>
+            </div>
+            <span class="target-icon">◎</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+          </div>
+          <p>Every practice session takes you one step further.</p>
+        </div>
+
+        <div class="preview-heading">
+          <h4>Build your skills</h4>
+          <span>Explore areas</span>
+        </div>
+
+        <div class="skill-row">
+          <div class="skill-icon aptitude-icon">Aa</div>
+          <div class="skill-details">
+            <strong>Logical Reasoning</strong>
+            <span>Think critically and solve problems</span>
+          </div>
+          <span class="skill-arrow">→</span>
+        </div>
+
+        <div class="skill-row">
+          <div class="skill-icon exam-icon">01</div>
+          <div class="skill-details">
+            <strong>Mock Examinations</strong>
+            <span>Practice under exam conditions</span>
+          </div>
+          <span class="skill-arrow">→</span>
+        </div>
+
+        <div class="skill-row">
+          <div class="skill-icon interview-icon">✦</div>
+          <div class="skill-details">
+            <strong>Interview Preparation</strong>
+            <span>Get ready to present your best self</span>
+          </div>
+          <span class="skill-arrow">→</span>
+        </div>
+
+        <div class="dashboard-footer">
+          <span class="footer-status-dot"></span>
+          Your future is worth preparing for.
+        </div>
+      </div>
+
+      <div class="floating-badge">
+        <span class="badge-star">✦</span>
+        <div>
+          <strong>Keep improving</strong>
+          <p>One step at a time</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits strip -->
+  <section class="benefits-strip">
+    <div class="benefit-item">
+      <span class="benefit-symbol">01</span>
+      <div>
+        <strong>Assess your skills</strong>
+        <p>Know where you stand</p>
+      </div>
+    </div>
+
+    <div class="benefit-item">
+      <span class="benefit-symbol">02</span>
+      <div>
+        <strong>Practice with purpose</strong>
+        <p>Focus on what matters</p>
+      </div>
+    </div>
+
+    <div class="benefit-item">
+      <span class="benefit-symbol">03</span>
+      <div>
+        <strong>Build confidence</strong>
+        <p>Prepare for opportunities</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="content-section" id="features">
+    <div class="section-heading">
+      <span class="section-kicker">YOUR PERSONAL PREPARATION PARTNER</span>
+      <h2>Everything you need to move <span>forward.</span></h2>
+      <p>
+        Turn your preparation into a focused routine with tools designed
+        to help you understand your strengths and work on your weaknesses.
+      </p>
+    </div>
+
+    <div class="feature-grid">
+      @for (f of features; track f.title) {
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <span class="preparation-mark">📚</span>
+          </div>
+          <h3>{{ f.title }}</h3>
+          <p>{{ f.text }}</p>
+          <span class="feature-number">PREPARE · PRACTICE · PROGRESS</span>
+        </article>
+      }
+    </div>
+  </section>
+
+  <!-- Preparation areas -->
+  <section class="content-section preparation-section">
+    <div class="section-heading">
+      <span class="section-kicker">FIND YOUR FOCUS</span>
+      <h2>Prepare for the <span>next opportunity.</span></h2>
+      <p>
+        Choose the skills and subjects that match your career goals.
+      </p>
+    </div>
+
+    <div class="preparation-grid">
+      @for (c of categories; track c.name) {
+        <article class="preparation-card">
+          <div class="preparation-top">
+            <span class="preparation-mark">📚</span>
+            <span class="preparation-arrow" aria-hidden="true">↗</span>
+          </div>
+          <h3>{{ c.name }}</h3>
+          <p>{{ c.text }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <!-- Final call to action -->
+  @if (!auth.isLoggedIn()) {
+    <section class="final-cta">
+      <div class="cta-decoration cta-decoration-one"></div>
+      <div class="cta-decoration cta-decoration-two"></div>
+
+      <div class="cta-content">
+        <span class="section-kicker">YOUR FUTURE STARTS HERE</span>
+        <h2>Don't just look for opportunities.<br />
+          <span>Prepare for them.</span>
+        </h2>
+        <p>
+          Start building your skills today and take a confident step
+          toward your career goals.
+        </p>
+        <a class="btn cta-btn" routerLink="/register">
+          Create Your Free Account <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  }
+
+</main>

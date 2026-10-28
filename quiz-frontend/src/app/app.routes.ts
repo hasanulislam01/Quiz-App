@@ -2,7 +2,9 @@ import { Routes } from '@angular/router';
 import { adminGuard, authGuard } from './core/guards';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'home' },
+  // { path: '', pathMatch: 'full', redirectTo: 'home' },
+  { path: '', pathMatch: 'full',
+  loadComponent: () => import('./pages/landing/landing').then(m => m.Landing) },
   // { path: 'login', loadComponent: () => import('./auth/login').then(m => m.LoginComponent) },
   { path: 'login', loadComponent: () => import('./auth/login/login').then(m => m.Login)},
   { path: 'register', loadComponent: () => import('./auth/register/register').then(m => m.Register) },
@@ -13,7 +15,7 @@ export const routes: Routes = [
   { path: 'result/:id', canActivate: [authGuard],
     loadComponent: () => import('./user/result').then(m => m.ResultComponent) },
   { path: 'my-attempts', canActivate: [authGuard],
-    loadComponent: () => import('./user/my-attempts').then(m => m.MyAttemptsComponent) },
+    loadComponent: () => import('./user/my-attempts/my-attempts').then(m => m.MyAttempts) },
     { path: 'admin', canActivate: [adminGuard],
     loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES) },
   { path: '**', redirectTo: 'home' }

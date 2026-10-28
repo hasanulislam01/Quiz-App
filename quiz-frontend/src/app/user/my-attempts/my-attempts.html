@@ -1,0 +1,143 @@
+<section class="results-container">
+  <div class="results-header">
+    <div>
+      <span class="section-label">PERFORMANCE TRACKER</span>
+      <h2>My Results</h2>
+      <p class="results-subtitle">
+        Track your progress and review your quiz attempts.
+      </p>
+    </div>
+
+    <div class="results-icon">📊</div>
+  </div>
+
+  <div class="results-summary">
+    <div class="summary-card">
+      <div class="summary-icon total-icon">📝</div>
+      <div>
+        <span>Total Attempts</span>
+        <h3>{{ attempts().length }}</h3>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon completed-icon">✅</div>
+      <div>
+        <span>Completed</span>
+        <h3>
+          {{ getCompletedCount() }}
+        </h3>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon pending-icon">⏳</div>
+      <div>
+        <span>In Progress</span>
+        <h3>
+          {{ getInProgressCount() }}
+        </h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-panel">
+    <div class="panel-header">
+      <div>
+        <h3>Quiz History</h3>
+        <p>Your previous attempts and performance</p>
+      </div>
+
+      <span class="attempt-count">
+        {{ attempts().length }} attempts
+      </span>
+    </div>
+
+    @if (attempts().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">📚</div>
+        <h3>No results yet</h3>
+        <p>
+          You haven't taken any quiz yet. Start practicing to see your
+          results here.
+        </p>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Score</th>
+              <th>Status</th>
+              <th class="action-heading">Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (a of attempts(); track a.id) {
+              <tr>
+                <td>
+                  <div class="date-cell">
+                    <span class="date-icon">📅</span>
+                    <span>{{ a.startedAt | date: 'medium' }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <span class="category-name">
+                    {{ a.categoryName }}
+                  </span>
+                </td>
+
+                <td>
+                  @if (a.status === 'IN_PROGRESS') {
+                    <span class="score-pending">Not completed</span>
+                  } @else {
+                    <span class="score-value">
+                      {{ a.score }} <span class="score-divider">/</span>
+                      {{ a.total }}
+                    </span>
+                  }
+                </td>
+
+                <td>
+                  @if (a.status === 'IN_PROGRESS') {
+                    <span class="status-badge status-progress">
+                      <span class="status-dot"></span>
+                      In Progress
+                    </span>
+                  } @else {
+                    <span class="status-badge status-completed">
+                      <span class="status-dot"></span>
+                      Completed
+                    </span>
+                  }
+                </td>
+
+                <td class="action-cell">
+                  @if (a.status === 'IN_PROGRESS') {
+                    <a
+                      class="action-button resume-button"
+                      [routerLink]="['/quiz', a.id]"
+                    >
+                      Resume <span>→</span>
+                    </a>
+                  } @else {
+                    <a
+                      class="action-button review-button"
+                      [routerLink]="['/result', a.id]"
+                    >
+                      Review <span>↗</span>
+                    </a>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</section>

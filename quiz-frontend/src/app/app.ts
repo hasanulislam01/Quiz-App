@@ -8,7 +8,7 @@ import { AuthService } from './core/auth.service';
   template: `
     <div class="app-wrapper">
       <nav class="navbar">
-      <a class="brand" routerLink="/">Quiz Apps</a>
+      <a class="brand" routerLink="/" class="footer-brand"><img src="images/logo.png" alt="System Logo" /> Job Preparation Helper</a>
       <div class="links">
         @if (auth.isLoggedIn()) {
           <a routerLink="/home" routerLinkActive="active">Quizzes</a>
@@ -30,13 +30,13 @@ import { AuthService } from './core/auth.service';
     <footer class="footer">
       <div class="footer-content">
         <a routerLink="/" class="footer-brand">
-          <img src="images/logo.png" alt="Quiz Apps Logo" />
-          <span>Quiz Apps</span>
+          <img src="images/logo.png" alt="System Logo" />
+          <span>Job Preparation Helper</span>
         </a>
         <p>This system is design and develop by Hasanul Islam</p>
 
         <p>
-          &copy; {{ currentYear }} Quiz Apps. All rights reserved.
+          &copy; {{ currentYear }} Job Preparation Helper. All rights reserved.
         </p>
       </div>
     </footer>
