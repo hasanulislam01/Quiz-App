@@ -3,8 +3,9 @@ import { adminGuard, authGuard } from './core/guards';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
-  { path: 'login', loadComponent: () => import('./auth/login').then(m => m.LoginComponent) },
-  { path: 'register', loadComponent: () => import('./auth/register').then(m => m.RegisterComponent) },
+  // { path: 'login', loadComponent: () => import('./auth/login').then(m => m.LoginComponent) },
+  { path: 'login', loadComponent: () => import('./auth/login/login').then(m => m.Login)},
+  { path: 'register', loadComponent: () => import('./auth/register/register').then(m => m.Register) },
   { path: 'home', canActivate: [authGuard],
     loadComponent: () => import('./user/home').then(m => m.HomeComponent) },
   { path: 'quiz/:id', canActivate: [authGuard],
