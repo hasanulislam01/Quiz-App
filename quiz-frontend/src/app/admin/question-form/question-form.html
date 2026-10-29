@@ -1,0 +1,191 @@
+
+<div class="question-form-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-icon">✏️</div>
+      <div>
+        <h2>{{ id ? 'Edit Question' : 'Create New Question' }}</h2>
+        <p>
+          {{ id
+            ? 'Update the question, category, and answer options.'
+            : 'Add a new question to help job seekers test their preparation.' }}
+        </p>
+      </div>
+    </div>
+
+    <a class="back-btn" routerLink="/admin/questions">
+      <span>←</span> Back to Questions
+    </a>
+  </div>
+
+  <!-- Form Card -->
+  <div class="form-card">
+
+    <div class="form-card-header">
+      <div>
+        <h3>Question Information</h3>
+        <p>Fill in the details below to configure your question.</p>
+      </div>
+      <span class="required-note">
+        <span>*</span> Required fields
+      </span>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+
+      <!-- Category -->
+      <div class="form-section">
+        <label class="field-label" for="categoryId">
+          <span class="field-icon">📂</span>
+          Category <span class="required">*</span>
+        </label>
+
+        <select id="categoryId" formControlName="categoryId">
+          <option [ngValue]="null" disabled>Select a category</option>
+          @for (c of categories(); track c.id) {
+            <option [ngValue]="c.id">{{ c.name }}</option>
+          }
+        </select>
+
+        <small class="field-hint">
+          Choose the category where this question belongs.
+        </small>
+      </div>
+
+      <!-- Question Text -->
+      <div class="form-section">
+        <label class="field-label" for="questionText">
+          <span class="field-icon">💬</span>
+          Question <span class="required">*</span>
+        </label>
+
+        <textarea
+          id="questionText"
+          rows="4"
+          formControlName="text"
+          placeholder="Write your question here..."
+        ></textarea>
+
+        <small class="field-hint">
+          Write a clear question that candidates can easily understand.
+        </small>
+      </div>
+
+      <!-- Answer Options -->
+      <div class="options-section">
+        <div class="options-header">
+          <div>
+            <label class="field-label">
+              <span class="field-icon">🎯</span>
+              Answer Options <span class="required">*</span>
+            </label>
+            <p>Select the radio button beside the correct answer.</p>
+          </div>
+
+          <span class="option-count">
+            {{ options.length }} options
+          </span>
+        </div>
+
+        <div class="option-instruction">
+          <span>💡</span>
+          Select one correct answer for this question.
+        </div>
+
+        <div class="options-list" formArrayName="options">
+          @for (g of options.controls; track g; let i = $index) {
+            <div
+              class="option-row"
+              [class.correct-option]="g.value.correct"
+              [formGroupName]="i"
+            >
+              <label class="correct-selector" [attr.for]="'correct-' + i">
+                <input
+                  type="radio"
+                  [id]="'correct-' + i"
+                  name="correctOption"
+                  [checked]="g.value.correct"
+                  (change)="setCorrect(i)"
+                >
+                <span class="radio-custom"></span>
+              </label>
+
+              <span class="option-letter">
+                {{ String.fromCharCode(65 + i) }}
+              </span>
+
+              <input
+                class="option-input"
+                formControlName="text"
+                [placeholder]="'Enter option ' + (i + 1)"
+                [attr.aria-label]="'Option ' + (i + 1) + ' text'"
+              >
+
+              @if (g.value.correct) {
+                <span class="correct-label">Correct answer</span>
+              }
+
+              <button
+                type="button"
+                class="remove-btn"
+                (click)="removeOption(i)"
+                [disabled]="options.length <= 2"
+                title="Remove option"
+                [attr.aria-label]="'Remove option ' + (i + 1)"
+              >
+                ✕
+              </button>
+            </div>
+          }
+        </div>
+
+        <button
+          type="button"
+          class="add-option-btn"
+          (click)="addOption()"
+        >
+          <span>+</span> Add Another Option
+        </button>
+      </div>
+
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-message">
+          <span>⚠️</span>
+          {{ error() }}
+        </div>
+      }
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <a class="cancel-btn" routerLink="/admin/questions">
+          Cancel
+        </a>
+
+        <button
+          class="save-btn"
+          type="submit"
+          [disabled]="saving()"
+        >
+          @if (saving()) {
+            <span class="loading-spinner"></span>
+            Saving...
+          } @else {
+            <span>✓</span>
+            {{ id ? 'Update Question' : 'Save Question' }}
+          }
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Footer Note -->
+  <p class="page-note">
+    <span>🔒</span>
+    Make sure the correct answer is selected before saving.
+  </p>
+
+</div>

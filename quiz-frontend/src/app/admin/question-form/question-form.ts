@@ -1,57 +1,21 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AdminService } from '../core/admin.service';
-import { Category, OptionDto, QuestionDto } from '../core/models';
+import { AdminService } from '../../core/admin.service';
+import { Category, OptionDto, QuestionDto } from '../../core/models';
 
 @Component({
   selector: 'app-question-form',
-  imports: [ReactiveFormsModule, RouterLink],
-  template: `
-    <h2>{{ id ? 'Edit question' : 'Add question' }}</h2>
-    <div class="card">
-      <form [formGroup]="form" (ngSubmit)="save()">
-        <label>Category</label>
-        <select formControlName="categoryId">
-          <option [ngValue]="null" disabled>Select a category</option>
-          @for (c of categories(); track c.id) {
-            <option [ngValue]="c.id">{{ c.name }}</option>
-          }
-        </select>
-
-        <label>Question</label>
-        <textarea rows="3" formControlName="text"></textarea>
-
-        <label>Options (select the correct one)</label>
-        <div formArrayName="options">
-          @for (g of options.controls; track g; let i = $index) {
-            <div class="row" [formGroupName]="i">
-              <input type="radio" name="correctOption" [checked]="g.value.correct" (change)="setCorrect(i)">
-              <input formControlName="text" placeholder="Option text">
-              <button type="button" class="btn small danger" (click)="removeOption(i)"
-                      [disabled]="options.length <= 2">Remove</button>
-            </div>
-          }
-        </div>
-        <div class="row">
-          <button type="button" class="btn small secondary" (click)="addOption()">Add option</button>
-        </div>
-
-        @if (error()) { <p class="error">{{ error() }}</p> }
-
-        <div class="row">
-          <button class="btn" type="submit" [disabled]="saving()">Save question</button>
-          <a class="btn secondary" routerLink="/admin/questions">Cancel</a>
-        </div>
-      </form>
-    </div>
-  `
+  imports: [RouterLink, ReactiveFormsModule],
+  templateUrl: './question-form.html',
+  styleUrl: './question-form.css',
 })
-export class QuestionFormComponent {
+export class QuestionForm {
   private fb = inject(FormBuilder);
   private api = inject(AdminService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  readonly String = String;
 
   id = this.route.snapshot.paramMap.get('id');       // null when adding a new question
   categories = signal<Category[]>([]);
@@ -76,6 +40,8 @@ export class QuestionFormComponent {
         q.options.forEach(o => this.options.push(this.optionGroup(o)));
       });
     } else {
+      this.addOption();
+      this.addOption();
       this.addOption();
       this.addOption();
     }

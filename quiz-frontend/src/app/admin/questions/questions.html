@@ -1,0 +1,147 @@
+
+<div class="questions-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-icon">❓</div>
+      <div>
+        <h2>Question Management</h2>
+        <p>Manage your questions and organize them by category.</p>
+      </div>
+    </div>
+
+    <a class="btn-add" routerLink="/admin/questions/new">
+      <span class="plus-icon">+</span>
+      Add Question
+    </a>
+  </div>
+
+  <!-- Questions Summary -->
+  <div class="summary-card">
+    <div class="summary-icon">📝</div>
+    <div>
+      <span class="summary-label">Total Questions</span>
+      <h3>{{ questions().length }}</h3>
+    </div>
+  </div>
+
+  <!-- Questions Table Card -->
+  <div class="questions-card">
+
+    <div class="card-header">
+      <div>
+        <h3>All Questions</h3>
+        <p>View, edit, or delete your questions.</p>
+      </div>
+
+      <div class="filter-box">
+        <label for="categoryFilter">Filter by category</label>
+        <select
+          id="categoryFilter"
+          [ngModel]="categoryId"
+          (ngModelChange)="onFilter($event)"
+          name="filter"
+        >
+          <option [ngValue]="null">All Categories</option>
+          @for (c of categories(); track c.id) {
+            <option [ngValue]="c.id">{{ c.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    @if (error()) {
+      <div class="error-message">
+        <span>⚠️</span>
+        {{ error() }}
+      </div>
+    }
+
+    <div class="table-wrapper">
+      <table class="questions-table">
+        <thead>
+          <tr>
+            <th>QUESTION</th>
+            <th>CATEGORY</th>
+            <th>CORRECT ANSWER</th>
+            <th class="actions-heading">ACTIONS</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (q of questions(); track q.id) {
+            <tr>
+              <td>
+                <div class="question-cell">
+                  <span class="question-number">Q</span>
+                  <span class="question-text">{{ q.text }}</span>
+                </div>
+              </td>
+
+              <td>
+                <span class="category-badge">
+                  {{ q.categoryName }}
+                </span>
+              </td>
+
+              <td>
+                <span class="answer-badge">
+                  <span class="answer-dot"></span>
+                  {{ correctText(q) }}
+                </span>
+              </td>
+
+              <td>
+                <div class="action-buttons">
+                  <a
+                    class="action-btn edit-btn"
+                    [routerLink]="['/admin/questions', q.id, 'edit']"
+                    title="Edit question"
+                  >
+                    <span>✏️</span>
+                    Edit
+                  </a>
+
+                  <button
+                    type="button"
+                    class="action-btn delete-btn"
+                    (click)="remove(q)"
+                    title="Delete question"
+                  >
+                    <span>🗑️</span>
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4">
+                <div class="empty-state">
+                  <div class="empty-icon">📋</div>
+                  <h3>No questions found</h3>
+                  <p>Try another category or add your first question.</p>
+                  <a class="btn-add" routerLink="/admin/questions/new">
+                    + Add Question
+                  </a>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-footer">
+      <span>
+        Showing <strong>{{ questions().length }}</strong> question(s)
+      </span>
+      <span class="status-indicator">
+        <span class="status-dot"></span>
+        Questions are manageable
+      </span>
+    </div>
+
+  </div>
+</div>
