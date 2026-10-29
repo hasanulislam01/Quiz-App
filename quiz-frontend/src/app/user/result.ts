@@ -6,7 +6,7 @@ import { AttemptDetail } from '../core/models';
 @Component({
   selector: 'app-result',
   imports: [RouterLink],
-  template: `
+  template: ` 
     @if (error()) { <p class="error">{{ error() }}</p> }
     @if (attempt(); as a) {
       <div class="card">

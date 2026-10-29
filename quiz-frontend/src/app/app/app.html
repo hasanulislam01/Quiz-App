@@ -1,0 +1,114 @@
+<div class="app-wrapper">
+      <!-- Navbar -->
+      <header class="navbar">
+        <a class="brand" routerLink="/">
+          <span class="brand-logo">
+            <img src="/images/logo.png" alt="Job Preparation Helper Logo" />
+          </span>
+          <span class="brand-name">
+            Job Preparation <strong>Helper</strong>
+          </span>
+        </a>
+
+        <nav class="links">
+          @if (auth.isLoggedIn()) {
+            <a
+              class="nav-link"
+              routerLink="/home"
+              routerLinkActive="active"
+            >
+              <span class="nav-icon">▦</span>
+              Quizzes
+            </a>
+
+            <a
+              class="nav-link"
+              routerLink="/my-attempts"
+              routerLinkActive="active"
+            >
+              <span class="nav-icon">▤</span>
+              My Results
+            </a>
+
+            @if (auth.isAdmin()) {
+              <a
+                class="nav-link"
+                routerLink="/admin"
+                routerLinkActive="active"
+              >
+                <span class="nav-icon">⚙</span>
+                Admin
+              </a>
+            }
+
+            <div class="user-profile">
+              <div class="user-avatar">
+                {{ auth.user()?.name?.charAt(0)?.toUpperCase() || 'U' }}
+              </div>
+              <span class="user-name">{{ auth.user()?.name }}</span>
+            </div>
+
+            <button class="logout-btn" (click)="auth.logout()">
+              <span>↪</span>
+              Logout
+            </button>
+          } @else {
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">
+              Login
+            </a>
+
+            <a class="register-btn" routerLink="/register">
+              Get Started <span>→</span>
+            </a>
+          }
+        </nav>
+      </header>
+
+      <!-- Main content -->
+      <main class="container">
+        <router-outlet />
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-top">
+            <div class="footer-about">
+              <a routerLink="/" class="footer-brand">
+                <span class="footer-logo">
+                  <img src="/images/logo.png" alt="Job Preparation Helper Logo" />
+                </span>
+                <span>Job Preparation <strong>Helper</strong></span>
+              </a>
+
+              <p class="footer-description">
+                Prepare with confidence. Practice smarter. Get closer to your
+                dream career with every attempt.
+              </p>
+            </div>
+
+            <div class="footer-info">
+              <h3>Made with purpose</h3>
+              <p>
+                Designed and developed by
+                <strong>Hasanul Islam</strong>
+              </p>
+              <span class="footer-tag">
+                Your journey to success starts here.
+              </span>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <p>
+              &copy; {{ currentYear }} Job Preparation Helper.
+              All rights reserved.
+            </p>
+
+            <a routerLink="/" class="back-to-top">
+              Back to home <span>↑</span>
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
