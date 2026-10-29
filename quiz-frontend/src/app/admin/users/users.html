@@ -1,0 +1,111 @@
+
+<div class="users-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-icon">👥</div>
+      <div>
+        <h2>User Management</h2>
+        <p>View registered users and their account roles.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Card -->
+  <div class="summary-card">
+    <div class="summary-icon">👤</div>
+    <div>
+      <span class="summary-label">Total Users</span>
+      <h3>{{ users().length }}</h3>
+      <span class="summary-description">Registered accounts</span>
+    </div>
+  </div>
+
+  <!-- Users Table Card -->
+  <div class="users-card">
+
+    <div class="card-header">
+      <div>
+        <h3>All Users</h3>
+        <p>Account information and assigned roles.</p>
+      </div>
+
+      <span class="user-count">
+        {{ users().length }} users
+      </span>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>USER</th>
+            <th>EMAIL ADDRESS</th>
+            <th>ACCOUNT ROLE</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (u of users(); track u.id) {
+            <tr>
+              <td>
+                <div class="user-info">
+                  <div class="user-avatar">
+                    {{ (u.name || '?').charAt(0).toUpperCase() }}
+                  </div>
+
+                  <div class="user-details">
+                    <span class="user-name">{{ u.name }}</span>
+                    <span class="user-id">ID: {{ u.id }}</span>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <div class="email-cell">
+                  <span class="email-icon">✉</span>
+                  <span>{{ u.email }}</span>
+                </div>
+              </td>
+
+              <td>
+                <span
+                  class="role-badge"
+                  [class.admin-role]="u.role?.toUpperCase() === 'ADMIN'"
+                  [class.user-role]="u.role?.toUpperCase() !== 'ADMIN'"
+                >
+                  <span class="role-dot"></span>
+                  {{ u.role }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="3">
+                <div class="empty-state">
+                  <div class="empty-icon">👥</div>
+                  <h3>No users found</h3>
+                  <p>Registered users will appear here.</p>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-footer">
+      <span>
+        Showing <strong>{{ users().length }}</strong> user(s)
+      </span>
+
+      <span class="status-indicator">
+        <span class="status-dot"></span>
+        User directory
+      </span>
+    </div>
+
+  </div>
+
+</div>

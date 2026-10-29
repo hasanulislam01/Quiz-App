@@ -20,7 +20,7 @@ export const ADMIN_ROUTES: Routes = [
       { path: 'settings',
         loadComponent: () => import('./exam-settings/exam-settings').then(m => m.ExamSettings) },
       { path: 'users',
-        loadComponent: () => import('./users').then(m => m.AdminUsersComponent) },
+        loadComponent: () => import('./users/users').then(m => m.Users) },
       { path: 'attempts',
         loadComponent: () => import('./attempts').then(m => m.AdminAttemptsComponent) },
       // reuses the user's result page, but loads the attempt through the admin endpoint
