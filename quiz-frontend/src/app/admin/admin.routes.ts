@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { AdminLayoutComponent } from './admin-layout';
+import { AdminLayout } from './admin-layout/admin-layout';
 
 export const ADMIN_ROUTES: Routes = [
   {
     path: '',
-    component: AdminLayoutComponent,
+    component: AdminLayout,
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard',
@@ -22,7 +22,7 @@ export const ADMIN_ROUTES: Routes = [
       { path: 'users',
         loadComponent: () => import('./users/users').then(m => m.Users) },
       { path: 'attempts',
-        loadComponent: () => import('./attempts').then(m => m.AdminAttemptsComponent) },
+        loadComponent: () => import('./attempts/attempts').then(m => m.Attempts) },
       // reuses the user's result page, but loads the attempt through the admin endpoint
       { path: 'attempts/:id', data: { admin: true },
         loadComponent: () => import('../user/result').then(m => m.ResultComponent) }

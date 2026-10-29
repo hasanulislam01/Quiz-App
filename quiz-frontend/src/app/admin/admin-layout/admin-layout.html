@@ -1,0 +1,89 @@
+<div class="admin-layout">
+      <!-- Sidebar -->
+      <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon"><img src="/images/logo.png" alt=""></div>
+          <div class="brand-text">
+            <h2>Job Preparation Helper</h2>
+            <span>Admin Panel</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section-label">MAIN MENU</div>
+
+        <nav class="admin-tabs">
+          <a
+            routerLink="/admin/dashboard"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span class="nav-icon">▦</span>
+            <span>Dashboard</span>
+            <span class="active-indicator"></span>
+          </a>
+
+          <a routerLink="/admin/categories" routerLinkActive="active">
+            <span class="nav-icon">▤</span>
+            <span>Categories</span>
+            <span class="active-indicator"></span>
+          </a>
+
+          <a routerLink="/admin/questions" routerLinkActive="active">
+            <span class="nav-icon">☷</span>
+            <span>Questions</span>
+            <span class="active-indicator"></span>
+          </a>
+
+          <a routerLink="/admin/settings" routerLinkActive="active">
+            <span class="nav-icon">⚙</span>
+            <span>Exam Settings</span>
+            <span class="active-indicator"></span>
+          </a>
+
+          <a routerLink="/admin/users" routerLinkActive="active">
+            <span class="nav-icon">♙</span>
+            <span>Users</span>
+            <span class="active-indicator"></span>
+          </a>
+
+          <a routerLink="/admin/attempts" routerLinkActive="active">
+            <span class="nav-icon">▧</span>
+            <span>Attempts</span>
+            <span class="active-indicator"></span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="footer-avatar">A</div>
+          <div class="footer-user">
+            <strong>Administrator</strong>
+            <span>Manage your platform</span>
+          </div>
+          <span class="online-dot"></span>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="admin-main">
+        <header class="topbar">
+          <div>
+            <span class="topbar-label">JOBPREP MANAGEMENT</span>
+            <h1>Admin Workspace</h1>
+          </div>
+
+          <div class="topbar-badge">
+            <span class="topbar-status-dot"></span>
+            Administration
+          </div>
+        </header>
+
+        <section class="admin-content">
+          <router-outlet />
+        </section>
+
+        <footer class="admin-footer">
+          <span>© 2026 JobPrep. All rights reserved.</span>
+          <span>Admin Workspace</span>
+        </footer>
+      </main>
+    </div>

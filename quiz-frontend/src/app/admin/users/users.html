@@ -71,9 +71,9 @@
 
               <td>
                 <span
-                  class="role-badge"
-                  [class.admin-role]="u.role?.toUpperCase() === 'ADMIN'"
-                  [class.user-role]="u.role?.toUpperCase() !== 'ADMIN'"
+                    class="role-badge"
+                    [class.admin-role]="u.role.toUpperCase() === 'ADMIN'"
+                    [class.user-role]="u.role.toUpperCase() !== 'ADMIN'"
                 >
                   <span class="role-dot"></span>
                   {{ u.role }}

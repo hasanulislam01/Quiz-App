@@ -1,0 +1,168 @@
+<div class="attempts-page">
+  <div class="page-header">
+    <div>
+      <h2>All Attempts</h2>
+      <p class="page-subtitle">
+        Monitor exam attempts, review scores, and track user progress.
+      </p>
+    </div>
+
+    <div class="attempts-count">
+      <span class="count-label">Total Attempts</span>
+      <span class="count-number">{{ attempts().length }}</span>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-card">
+    <div class="filter-heading">
+      <div class="filter-icon">☷</div>
+      <div>
+        <h3>Filter Attempts</h3>
+        <p>Find attempts by category or user.</p>
+      </div>
+    </div>
+
+    <div class="filter-controls">
+      <div class="filter-field">
+        <label for="categoryFilter">Category</label>
+        <select
+          id="categoryFilter"
+          [ngModel]="categoryId"
+          (ngModelChange)="categoryId = $event; load()"
+          name="category"
+        >
+          <option [ngValue]="null">All categories</option>
+          @for (c of categories(); track c.id) {
+            <option [ngValue]="c.id">{{ c.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label for="userFilter">User</label>
+        <select
+          id="userFilter"
+          [ngModel]="userId"
+          (ngModelChange)="userId = $event; load()"
+          name="user"
+        >
+          <option [ngValue]="null">All users</option>
+          @for (u of users(); track u.id) {
+            <option [ngValue]="u.id">{{ u.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Attempts Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <div>
+        <h3>Attempt History</h3>
+        <p>Review individual exam performance and status.</p>
+      </div>
+
+      <span class="record-count">
+        {{ attempts().length }} records
+      </span>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="attempts-table">
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>User</th>
+            <th>Category</th>
+            <th>Score</th>
+            <th>Status</th>
+            <th class="action-column">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (a of attempts(); track a.id) {
+            <tr>
+              <td>
+                <span class="date-value">
+                  {{ a.startedAt | date: 'mediumDate' }}
+                </span>
+                <span class="time-value">
+                  {{ a.startedAt | date: 'shortTime' }}
+                </span>
+              </td>
+
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar">
+                    {{ a.userName.charAt(0).toUpperCase() }}
+                  </div>
+                  <span class="user-name">{{ a.userName }}</span>
+                </div>
+              </td>
+
+              <td>
+                <span class="category-name">{{ a.categoryName }}</span>
+              </td>
+
+              <td>
+                @if (a.status === 'IN_PROGRESS') {
+                  <span class="score-pending">Not completed</span>
+                } @else {
+                  <span class="score-value">
+                    {{ a.score }} <span class="score-divider">/</span> {{ a.total }}
+                  </span>
+                }
+              </td>
+
+              <td>
+                <span
+                  class="status-badge"
+                  [class.status-completed]="a.status === 'SUBMITTED'"
+                  [class.status-progress]="a.status === 'IN_PROGRESS'"
+                  [class.status-other]="a.status !== 'SUBMITTED' && a.status !== 'IN_PROGRESS'"
+                >
+                  <span class="status-dot"></span>
+                  {{ a.status.replace('_', ' ') }}
+                </span>
+              </td>
+
+              <td class="action-column">
+                @if (a.status !== 'IN_PROGRESS') {
+                  <a
+                    class="view-button"
+                    [routerLink]="['/admin/attempts', a.id]"
+                  >
+                    <span>View Details</span>
+                    <span class="view-arrow">→</span>
+                  </a>
+                } @else {
+                  <span class="no-action">—</span>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">
+                  <div class="empty-icon">📋</div>
+                  <h3>No attempts found</h3>
+                  <p>
+                    There are no attempts matching your selected filters.
+                    Try selecting a different category or user.
+                  </p>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-footer">
+      Showing {{ attempts().length }} attempt(s)
+    </div>
+  </div>
+</div>
