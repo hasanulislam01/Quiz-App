@@ -13,7 +13,7 @@ export const routes: Routes = [
   { path: 'quiz/:id', canActivate: [authGuard],
     loadComponent: () => import('./user/quiz').then(m => m.QuizComponent) },
   { path: 'result/:id', canActivate: [authGuard],
-    loadComponent: () => import('./user/result').then(m => m.ResultComponent) },
+    loadComponent: () => import('./user/result/result').then(m => m.Result) },
   { path: 'my-attempts', canActivate: [authGuard],
     loadComponent: () => import('./user/my-attempts/my-attempts').then(m => m.MyAttempts) },
     { path: 'admin', canActivate: [adminGuard],

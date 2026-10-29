@@ -1,0 +1,166 @@
+<div class="result-page">
+  @if (error()) {
+    <div class="error-banner">
+      <span class="error-icon">!</span>
+      <p>{{ error() }}</p>
+    </div>
+  }
+
+  @if (attempt(); as a) {
+    <!-- Result Summary -->
+    <section class="result-hero">
+      <div class="result-top">
+        <div class="result-heading">
+          <span class="eyebrow">EXAM SUMMARY</span>
+          <h2>{{ a.categoryName }}</h2>
+          @if (isAdmin) {
+            <p class="taken-by">
+              Exam taken by <strong>{{ a.userName }}</strong>
+            </p>
+          } @else {
+            <p class="taken-by">
+              Here is a summary of your exam performance.
+            </p>
+          }
+        </div>
+
+        <div class="result-status"
+          [class.expired-status]="a.status === 'EXPIRED'">
+          <span class="status-dot"></span>
+          {{ a.status.replace('_', ' ') }}
+        </div>
+      </div>
+
+      @if (a.status === 'EXPIRED') {
+        <div class="expired-notice">
+          <span>⏱</span>
+          <p>
+            <strong>Time's up!</strong>
+            The exam time ran out before this attempt was submitted.
+          </p>
+        </div>
+      }
+
+      <div class="score-panel">
+        <div class="score-main">
+          <span class="score-label">YOUR SCORE</span>
+          <div class="score-number">
+            {{ a.score }}
+            <span>/ {{ a.total }}</span>
+          </div>
+          <span class="score-caption">Points earned</span>
+        </div>
+
+        <div class="score-divider"></div>
+
+        <div class="percentage-panel">
+          <div class="percentage-circle"
+            [style.--score-percent]="percent() + '%'">
+            <div class="percentage-inner">
+              <strong>{{ percent() }}%</strong>
+            </div>
+          </div>
+          <div>
+            <span class="percentage-label">Overall Score</span>
+            <p>Exam performance</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <a
+          class="primary-action"
+          [routerLink]="isAdmin ? '/admin/attempts' : '/home'"
+        >
+          <span>{{ isAdmin ? '←' : '↻' }}</span>
+          {{ isAdmin ? 'Back to Attempts' : 'Take Another Quiz' }}
+        </a>
+
+        <a class="secondary-action" href="javascript:void(0)"
+        (click)="scrollToAnswerReview()">
+        Review Answers <span>↓</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Answer Review Heading -->
+    <section class="review-section" id="answer-review">
+      <div class="review-heading">
+        <div>
+          <span class="eyebrow">LEARN FROM YOUR RESULTS</span>
+          <h3>Answer Review</h3>
+          <p>Check the correct answers and review your selections.</p>
+        </div>
+        <div class="review-count">
+          {{ (a.review ?? []).length }} Questions
+        </div>
+      </div>
+
+      <!-- Questions -->
+      @for (item of a.review ?? []; track item.questionId; let i = $index) {
+        <article class="question-card">
+          <div class="question-header">
+            <span class="question-number">Q{{ i + 1 }}</span>
+            <span class="question-label">Question {{ i + 1 }}</span>
+
+            @if (item.selectedOptionId == null) {
+              <span class="answer-status unanswered">Not Answered</span>
+            } @else {
+              @if (isAnswerCorrect(item)) {
+                <span class="answer-status answer-correct">Correct</span>
+              } @else {
+                <span class="answer-status answer-incorrect">Incorrect</span>
+              }
+            }
+          </div>
+
+          <h4 class="question-text">{{ item.text }}</h4>
+
+          <div class="choices-list">
+            @for (o of item.options; track o.id) {
+              <div
+                class="choice"
+                [class.correct]="o.correct"
+                [class.wrong]="o.id === item.selectedOptionId && !o.correct"
+              >
+                <span class="choice-marker">
+                  @if (o.correct) {
+                    ✓
+                  } @else if (o.id === item.selectedOptionId) {
+                    ✕
+                  } @else {
+                    {{ String.fromCharCode(65 + $index) }}
+                  }
+                </span>
+
+                <span class="choice-text">{{ o.text }}</span>
+
+                <div class="choice-tags">
+                  @if (o.correct) {
+                    <span class="tag correct-tag">Correct Answer</span>
+                  }
+                  @if (o.id === item.selectedOptionId) {
+                    <span class="tag selected-tag">Your Choice</span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          @if (item.selectedOptionId == null) {
+            <div class="unanswered-note">
+              <span>ⓘ</span>
+              You didn't answer this question.
+            </div>
+          }
+        </article>
+      } @empty {
+        <div class="empty-review">
+          <div class="empty-review-icon">📋</div>
+          <h4>No answer review available</h4>
+          <p>There are no question details available for this attempt.</p>
+        </div>
+      }
+    </section>
+  }
+</div>

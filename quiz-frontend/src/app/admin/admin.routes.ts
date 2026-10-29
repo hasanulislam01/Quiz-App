@@ -25,7 +25,7 @@ export const ADMIN_ROUTES: Routes = [
         loadComponent: () => import('./attempts/attempts').then(m => m.Attempts) },
       // reuses the user's result page, but loads the attempt through the admin endpoint
       { path: 'attempts/:id', data: { admin: true },
-        loadComponent: () => import('../user/result').then(m => m.ResultComponent) }
+        loadComponent: () => import('../user/result/result').then(m => m.Result) }
     ]
   }
 ];
