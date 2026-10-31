@@ -19,6 +19,8 @@ export const routes: Routes = [
   { path: 'admin', canActivate: [adminGuard],
     loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES) },
   { path: 'practice', canActivate: [authGuard],
-  loadComponent: () => import('./user/practice/practice').then(m => m.Practice) },
+    loadComponent: () => import('./user/practice/practice').then(m => m.Practice) },
+  { path: 'profile', canActivate: [authGuard],
+    loadComponent: () => import('./user/profile/profile').then(m => m.Profile) },
   { path: '**', redirectTo: 'home' }
 ];

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { API_URL } from './api';
-import { AttemptDetail, AttemptSummary, Category, ExamSettings, PracticePage } from './models';
+import { AttemptDetail, AttemptSummary, Category, ExamSettings, PracticePage, UserProfile } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class QuizService {
@@ -25,8 +25,15 @@ export class QuizService {
   myAttempts() { return this.http.get<AttemptSummary[]>(`${API_URL}/attempts/my`); }
 
   practice(categoryId: number, q: string, page: number, size: number) {
-  const params = new HttpParams()
-    .set('categoryId', categoryId).set('q', q).set('page', page).set('size', size);
-  return this.http.get<PracticePage>(`${API_URL}/practice/questions`, { params });
-}
+    const params = new HttpParams()
+      .set('categoryId', categoryId).set('q', q).set('page', page).set('size', size);
+    return this.http.get<PracticePage>(`${API_URL}/practice/questions`, { params });
+  }
+
+  profile() { return this.http.get<UserProfile>(`${API_URL}/profile`); }
+
+  changePassword(currentPassword: string, newPassword: string) {
+    return this.http.put<{ message: string }>(`${API_URL}/profile/password`,
+      { currentPassword, newPassword });
+  }
 }

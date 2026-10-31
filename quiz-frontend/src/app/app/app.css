@@ -173,6 +173,7 @@ a {
   background: #f8fafc;
   border: 1px solid #e8edf4;
   border-radius: 30px;
+  cursor: pointer;
 }
 
 .user-avatar {

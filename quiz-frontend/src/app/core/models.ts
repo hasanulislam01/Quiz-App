@@ -43,3 +43,7 @@ export interface Dashboard {
 export interface PracticePage {
   items: QuestionDto[]; page: number; totalPages: number; totalItems: number;
 }
+
+export interface UserProfile {
+  id: number; name: string; email: string; role: Role; attemptsTaken: number;
+}

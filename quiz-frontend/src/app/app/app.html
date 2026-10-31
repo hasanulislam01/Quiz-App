@@ -48,7 +48,7 @@
               </a>
             }
 
-            <div class="user-profile">
+            <div class="user-profile" routerLink="/profile" routerLinkActive="active">
               <div class="user-avatar">
                 {{ auth.user()?.name?.charAt(0)?.toUpperCase() || 'U' }}
               </div>
