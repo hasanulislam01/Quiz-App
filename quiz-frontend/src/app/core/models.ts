@@ -39,3 +39,7 @@ export interface Dashboard {
   users: number; categories: number; questions: number; attempts: number;
   examQuestionCount: number; categoryStats: CategoryStat[];
 }
+
+export interface PracticePage {
+  items: QuestionDto[]; page: number; totalPages: number; totalItems: number;
+}

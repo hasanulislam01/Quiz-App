@@ -1,6 +1,8 @@
 package com.example.quiz.repository;
 
 import com.example.quiz.entity.Question;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +16,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query(value = "SELECT * FROM question WHERE category_id = :cid ORDER BY RAND() LIMIT :n",
             nativeQuery = true)
     List<Question> findRandomByCategory(@Param("cid") Long categoryId, @Param("n") int n);
+
+    Page<Question> findByCategoryIdAndTextContainingIgnoreCase(Long categoryId, String text, Pageable pageable);
 }

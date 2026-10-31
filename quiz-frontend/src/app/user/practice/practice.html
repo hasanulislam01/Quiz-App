@@ -1,0 +1,198 @@
+
+<div class="prepare-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">YOUR LEARNING SPACE</span>
+      <h2>Prepare by Category</h2>
+      <p class="muted">
+        Explore questions, test your knowledge, and reveal the correct answers.
+      </p>
+    </div>
+    <div class="header-icon">📚</div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-card">
+    <div class="filter-heading">
+      <div>
+        <h3>Find Your Questions</h3>
+        <p class="muted">Choose a category and search your question bank.</p>
+      </div>
+    </div>
+
+    <div class="filter-controls">
+      <div class="field-group">
+        <label>Question Category</label>
+        <select
+          [ngModel]="categoryId"
+          (ngModelChange)="onCategory($event)"
+          name="category"
+        >
+          <option [ngValue]="null" disabled>Select a category</option>
+          @for (c of categories(); track c.id) {
+            <option [ngValue]="c.id">
+              {{ c.name }} ({{ c.questionCount }})
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="field-group search-field">
+        <label>Search Questions</label>
+        <input
+          name="search"
+          placeholder="Type a keyword..."
+          [(ngModel)]="search"
+          (keyup.enter)="load(0)"
+        >
+      </div>
+
+      <button class="btn search-btn" (click)="load(0)">
+        <span>⌕</span> Search
+      </button>
+    </div>
+
+    <div class="answer-setting">
+      <label class="custom-checkbox">
+        <input
+          type="checkbox"
+          [checked]="showAll()"
+          (change)="toggleAll()"
+        >
+        <span class="checkmark"></span>
+        <span>Show all correct answers on this page</span>
+      </label>
+      <span class="setting-hint">You can reveal answers individually too.</span>
+    </div>
+  </div>
+
+  @if (error()) {
+    <div class="error-message">{{ error() }}</div>
+  }
+
+  <!-- Questions -->
+  @if (data(); as d) {
+
+    <div class="questions-heading">
+      <div>
+        <h3>Question Bank</h3>
+        <p class="muted">Practice at your own pace.</p>
+      </div>
+
+      <div class="question-count">
+        <strong>{{ d.totalItems }}</strong>
+        <span>Questions Found</span>
+      </div>
+    </div>
+
+    <div class="question-list">
+
+      @for (q of d.items; track q.id; let i = $index) {
+
+        <div class="question-card">
+
+          <div class="question-top">
+            <span class="question-number">
+              Q{{ d.page * pageSize + i + 1 }}
+            </span>
+
+            @if (isShown(q.id!)) {
+              <span class="answer-status">✓ Answer Revealed</span>
+            } @else {
+              <span class="answer-status hidden-status">Answer Hidden</span>
+            }
+          </div>
+
+          <h4 class="question-text">{{ q.text }}</h4>
+
+          <div class="options-list">
+            @for (o of q.options; track o.id) {
+
+              <div
+                class="option-item"
+                [class.correct]="isShown(q.id!) && o.correct"
+              >
+                <span class="option-marker">
+                  @if (isShown(q.id!) && o.correct) {
+                    ✓
+                  } @else {
+                    {{ $index + 1 }}
+                  }
+                </span>
+
+                <span class="option-text">{{ o.text }}</span>
+
+                @if (isShown(q.id!) && o.correct) {
+                  <span class="correct-label">Correct Answer</span>
+                }
+              </div>
+
+            }
+          </div>
+
+          <div class="question-footer">
+            <button
+              class="reveal-btn"
+              [class.hide-btn]="isShown(q.id!)"
+              (click)="toggle(q.id!)"
+            >
+              @if (isShown(q.id!)) {
+                <span>◉</span> Hide Answer
+              } @else {
+                <span>✦</span> Reveal Correct Answer
+              }
+            </button>
+          </div>
+
+        </div>
+
+      } @empty {
+        <div class="empty-state">
+          <div class="empty-icon">🔎</div>
+          <h3>No Questions Found</h3>
+          <p>Try another keyword or select a different category.</p>
+        </div>
+      }
+
+    </div>
+
+    <!-- Pagination -->
+    @if (d.totalPages > 1) {
+      <div class="pagination">
+
+        <button
+          class="page-btn"
+          [disabled]="d.page === 0"
+          (click)="load(d.page - 1)"
+        >
+          ← Previous
+        </button>
+
+        <span class="page-indicator">
+          Page <strong>{{ d.page + 1 }}</strong> of {{ d.totalPages }}
+        </span>
+
+        <button
+          class="page-btn"
+          [disabled]="d.page + 1 >= d.totalPages"
+          (click)="load(d.page + 1)"
+        >
+          Next →
+        </button>
+
+      </div>
+    }
+
+  } @else if (categoryId === null) {
+
+    <div class="welcome-state">
+      <div class="welcome-icon">🎯</div>
+      <h3>Ready to Start Preparing?</h3>
+      <p>Select a question category above to begin your preparation.</p>
+    </div>
+
+  }
+
+</div>

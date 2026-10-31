@@ -12,6 +12,13 @@
 
         <nav class="links">
           @if (auth.isLoggedIn()) {
+            <a class="nav-link"
+              routerLink="/practice" 
+              routerLinkActive="active"
+            >
+              <span class="nav-icon">📚</span>
+              Preparation
+            </a>
             <a
               class="nav-link"
               routerLink="/home"
@@ -37,7 +44,7 @@
                 routerLinkActive="active"
               >
                 <span class="nav-icon">⚙</span>
-                Admin
+                Admin Panel
               </a>
             }
 

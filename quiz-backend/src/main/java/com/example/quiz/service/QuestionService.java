@@ -4,6 +4,10 @@ import com.example.quiz.entity.*;
 import com.example.quiz.exception.ApiException;
 import com.example.quiz.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,5 +97,15 @@ public class QuestionService {
                 .toList();
         return new QuestionResponse(q.getId(), q.getText(), q.getCategory().getId(),
                 q.getCategory().getName(), options);
+    }
+
+    @Transactional(readOnly = true)
+    public PracticePage practice(Long categoryId, String q, int page, int size) {
+        Pageable pageable = PageRequest.of(Math.max(page, 0), Math.min(Math.max(size, 1), 50), Sort.by("id"));
+        Page<Question> result = questionRepo.findByCategoryIdAndTextContainingIgnoreCase(
+                categoryId, q == null ? "" : q.trim(), pageable);
+        return new PracticePage(
+                result.getContent().stream().map(this::toResponse).toList(),
+                result.getNumber(), result.getTotalPages(), result.getTotalElements());
     }
 }
